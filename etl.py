@@ -59,13 +59,21 @@ def process_song_data(spark, input_data, output_data, local_data=True):
     #parquetFile.createOrReplaceTempView("parquetFile")
     #songs = spark.sql("SELECT * FROM parquetFile WHERE year = 1969").show()
     
-'''
+
     # extract columns to create artists table
-    artists_table = 
+    # artist_id, name, location, lattitude, longitude
+    artists_table = spark.sql("SELECT artist_id , artist_name as name, artist_location as location, artist_latitude as lattitude, artist_longitude as longitude\
+        FROM song_data_table")
     
     # write artists table to parquet files
-    artists_table = 
-    '''
+    artists_table.write.mode("overwrite").parquet("artists.parquet")
+    
+    # Testing
+    # Parquet files can also be used to create a temporary view and then used in SQL statements.
+    #parquetFile = spark.read.parquet("artists.parquet")
+    #parquetFile.createOrReplaceTempView("parquetFile")
+    #artists = spark.sql("SELECT * FROM parquetFile WHERE name = 'Sonora Santanera'").show()
+    
 '''
 def process_log_data(spark, input_data, output_data):
     # get filepath to log data file
