@@ -50,8 +50,7 @@ def process_song_data(spark, input_data, output_data, local_data=True):
     
     
     # write songs table to parquet files partitioned by year and artist
-    if not os.path.exists("songs.parquet"):
-        songs_table = songs_table.write.partitionBy("year", "artist_id").parquet("songs.parquet")
+    songs_table = songs_table.write.mode("overwrite").partitionBy("year", "artist_id").parquet("songs.parquet")
     
     # Testing
     # Parquet files can also be used to create a temporary view and then used in SQL statements.
