@@ -46,7 +46,7 @@ def process_song_data(spark, input_data, output_data, run_local=True):
     # songs: song_id, title, artist_id, year, duration
     songs_table = spark.sql("SELECT song_id,title,artist_id,year,duration \
         FROM song_data_table\
-        WHERE song_id IS NOT NULL")
+        WHERE song_id IS NOT NULL").drop_duplicates()
     
     
     # write songs table to parquet files partitioned by year and artist
@@ -56,7 +56,7 @@ def process_song_data(spark, input_data, output_data, run_local=True):
     # artist_id, name, location, lattitude, longitude
     artists_table = spark.sql("SELECT artist_id , artist_name as name, artist_location as location, artist_latitude as lattitude, artist_longitude as longitude\
         FROM song_data_table\
-        WHERE artist_id IS NOT NULL")
+        WHERE artist_id IS NOT NULL").drop_duplicates()
     
     # write artists table to parquet files
     artists_table.write.mode("overwrite").parquet(output_data + "artists")
@@ -79,7 +79,7 @@ def process_log_data(spark, input_data, output_data, run_local=True):
 
     # extract columns for users table
     # user_id, first_name, last_name, gender, level
-    users_table = spark.sql("SELECT userId as user_id, firstName as first_name, lastName as last_name, gender, level FROM log_data_table WHERE userId IS NOT NULL")
+    users_table = spark.sql("SELECT userId as user_id, firstName as first_name, lastName as last_name, gender, level FROM log_data_table WHERE userId IS NOT NULL").drop_duplicates()
     
     # write users table to parquet files
     users_table.write.mode("overwrite").parquet(output_data + "users")
@@ -109,7 +109,7 @@ def process_log_data(spark, input_data, output_data, run_local=True):
                             FROM log_data_table 
                             WHERE log_data_table.ts IS NOT NULL
                             ) T
-                        """)
+                        """).drop_duplicates()
     
     # write time table to parquet files partitioned by year and month
     time_table.write.mode("overwrite").partitionBy("year","month").parquet(output_data + "times")
@@ -133,7 +133,7 @@ def process_log_data(spark, input_data, output_data, run_local=True):
                                 logT.userAgent as user_agent
                                 FROM log_data_table logT
                                 JOIN song_data_table songT on logT.artist = songT.artist_name and logT.song = songT.title
-                            """)
+                            """).drop_duplicates()
 
     # write songplays table to parquet files partitioned by year and month
     songplays_table.write.mode('overwrite').partitionBy("year", "month").parquet(output_data + "songplays")
