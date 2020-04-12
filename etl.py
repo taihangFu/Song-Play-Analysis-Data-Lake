@@ -29,9 +29,9 @@ def create_spark_session():
     return spark
 
 
-def process_song_data(spark, input_data, output_data, local_data=True):
+def process_song_data(spark, input_data, output_data, run_local=True):
     # get filepath to song data file
-    if local_data:
+    if run_local:
         song_data = get_files("data/song-data") # for Spark to read all JSON files from a directory i
     else:
         song_data = input_data+"song_data/*/*/*/*.json"
@@ -60,9 +60,9 @@ def process_song_data(spark, input_data, output_data, local_data=True):
     # write artists table to parquet files
     artists_table.write.mode("overwrite").parquet("artists.parquet")
     
-def process_log_data(spark, input_data, output_data, local_data=True):
+def process_log_data(spark, input_data, output_data, run_local=True):
     # get filepath to log data file
-    if local_data:
+    if run_local:
         log_data = get_files("data/log-data") # for Spark to read all JSON files from a directory i
     else:
         log_data = input_data+"log_data/*.json" #TODO
