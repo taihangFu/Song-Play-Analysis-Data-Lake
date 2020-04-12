@@ -144,8 +144,8 @@ def main():
     input_data = "s3a://udacity-dend/"
     output_data = "s3a://udacity-dend/output/"
     
-    process_song_data(spark, input_data, output_data, local_data=False)    
-    process_log_data(spark, input_data, output_data, local_data=False)
+    process_song_data(spark, input_data, output_data, run_local=True)    
+    process_log_data(spark, input_data, output_data, run_local=True)
 
 
 if __name__ == "__main__":
