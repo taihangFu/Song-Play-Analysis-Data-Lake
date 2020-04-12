@@ -49,7 +49,7 @@ def process_song_data(spark, input_data, output_data, run_local=True):
     
     
     # write songs table to parquet files partitioned by year and artist
-    songs_table = songs_table.write.mode("overwrite").partitionBy("year", "artist_id").parquet("songs.parquet")
+    songs_table = songs_table.write.mode("overwrite").partitionBy("year", "artist_id").parquet("songs")
 
     # extract columns to create artists table
     # artist_id, name, location, lattitude, longitude
@@ -58,7 +58,7 @@ def process_song_data(spark, input_data, output_data, run_local=True):
         WHERE artist_id IS NOT NULL")
     
     # write artists table to parquet files
-    artists_table.write.mode("overwrite").parquet("artists.parquet")
+    artists_table.write.mode("overwrite").parquet("artists")
     
 def process_log_data(spark, input_data, output_data, run_local=True):
     # get filepath to log data file
@@ -80,7 +80,7 @@ def process_log_data(spark, input_data, output_data, run_local=True):
     users_table = spark.sql("SELECT userId as user_id, firstName as first_name, lastName as last_name, gender, level FROM log_data_table WHERE userId IS NOT NULL")
     
     # write users table to parquet files
-    users_table.write.mode("overwrite").parquet("users.parquet")
+    users_table.write.mode("overwrite").parquet("users")
 
     # create timestamp column from original timestamp column
     # get_timestamp = udf()
@@ -110,7 +110,7 @@ def process_log_data(spark, input_data, output_data, run_local=True):
                         """)
     
     # write time table to parquet files partitioned by year and month
-    time_table.write.mode("overwrite").partitionBy("year","month").parquet("times.parquet")
+    time_table.write.mode("overwrite").partitionBy("year","month").parquet("times")
 
     # read in song data to use for songplays table
     #song_df = 
@@ -134,7 +134,7 @@ def process_log_data(spark, input_data, output_data, run_local=True):
                             """)
 
     # write songplays table to parquet files partitioned by year and month
-    songplays_table.write.mode('overwrite').partitionBy("year", "month").parquet("songplays.parquet")
+    songplays_table.write.mode('overwrite').partitionBy("year", "month").parquet("songplays")
 
 
 def main():
