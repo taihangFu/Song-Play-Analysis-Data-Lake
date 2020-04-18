@@ -1,4 +1,4 @@
-# Song-Play-Analysis-Data-Warehouse
+# Song-Play-Analysis-Data-Lake
 
 ## Task
 Built an ETL pipeline that extracts data from S3, processes using Spark, and loads the data back into S3 as a set of dimensional tables. This will allow analysis to continue finding insights.
