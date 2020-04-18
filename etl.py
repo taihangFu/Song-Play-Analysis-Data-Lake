@@ -7,10 +7,11 @@ from pyspark.sql.functions import udf, col
 from pyspark.sql.functions import year, month, dayofmonth, hour, weekofyear, date_format
 
 config = configparser.ConfigParser()
+#config.read('dl.cfg', encoding='utf-8-sig')
 config.read('dl.cfg')
 
-os.environ['AWS_ACCESS_KEY_ID']=config['AWS_ACCESS_KEY_ID']
-os.environ['AWS_SECRET_ACCESS_KEY']=config['AWS_SECRET_ACCESS_KEY']
+os.environ['AWS_ACCESS_KEY_ID']=config['AWS']['AWS_ACCESS_KEY_ID']
+os.environ['AWS_SECRET_ACCESS_KEY']=config['AWS']['AWS_SECRET_ACCESS_KEY']
 
 def get_files(filepath):
     all_files = []
@@ -67,7 +68,7 @@ def process_log_data(spark, input_data, output_data, run_local=True):
         log_data = get_files("data/log-data") # for Spark to read all JSON files from a directory i
         output_data = ""
     else:
-        log_data = input_data+"log_data/*.json" #TODO
+        log_data = input_data+"log-data/*/*/*.json" #TODO
         
     # read log data file
     df = spark.read.json(log_data)
@@ -142,10 +143,10 @@ def process_log_data(spark, input_data, output_data, run_local=True):
 def main():
     spark = create_spark_session()
     input_data = "s3a://udacity-dend/"
-    output_data = "s3a://udacity-dend/output/"
+    output_data = "s3a://myawstwstbucket/"
     
-    process_song_data(spark, input_data, output_data, run_local=True)    
-    process_log_data(spark, input_data, output_data, run_local=True)
+    process_song_data(spark, input_data, output_data, run_local=False)    
+    process_log_data(spark, input_data, output_data, run_local=False)
 
 
 if __name__ == "__main__":
