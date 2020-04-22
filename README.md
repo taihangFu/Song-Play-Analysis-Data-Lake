@@ -46,3 +46,7 @@ Using the song and log datasets, we'll need to create a star schema optimized fo
 * `etl.py` can be submitted locally or on cloud service such as AWS EMR
 * To spark submit `etl.py` on AWS EMR cluster you will have to set up a new EMR cluster on AWS and corresponding security group inbound rule to allow SSH to the EMR master node(hosted in EC2) from your IP address. Then copy the files from your local computer to the EMR node through SCP command before you spark submit the `etl.py` on the EMR node.
   * Set your EMR region to us-west-2 that is where the S3 Bucket located
+  
+## Sample Queries
+Includes in `query.ipynb`
+https://github.com/taihangFu/Song-Play-Analysis-Data-Lake/blob/master/query.ipynb
